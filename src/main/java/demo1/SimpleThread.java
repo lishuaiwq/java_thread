@@ -6,33 +6,41 @@ import java.util.concurrent.*;
 public class SimpleThread {
 
 
-    public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
-        new Thread(() -> {
-            for(int i = 0;i<10;i++){
-
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                System.out.println("1");
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        /***
+         * 线程得基本创建方式1，继承Thread重写其中得runf方法
+         */
+        new Thread(){
+            @Override
+            public void run() {
+                System.out.println("基础创建线程方式1");
             }
-        }).start();
-        new Thread(() -> System.out.println("2")).start();
+        }.start();
+
+        /***
+         * 线程得基本创建方式1，lambad写法
+         */
+        new Thread(()-> System.out.println("基础创建线程的方式1变种"));
 
 
-        ArrayList list = new ArrayList();
-        Thread thread = new Thread(() -> System.out.println("1"));
+        ///////////////////创建的线程没有返回值
+        Runnable thread = () -> System.out.println("基础创建线程的方式2");
+        new Thread(thread).start();
 
-        FutureTask<String> futureTask = new FutureTask<String>(() -> {
-            Thread.sleep(3000);
-           return "nihao";
+
+        ////////////////////////////
+        /****
+         * 基础创建
+         */
+        FutureTask<String> futureTask = new FutureTask( new Callable<String>() {
+
+            @Override
+            public String call() throws Exception {
+                return "hehe";
+            }
         });
-
-
-        Thread thread1 = new Thread(futureTask);
-        thread1.start();
-        String s = futureTask.get(3, TimeUnit.SECONDS);
-        System.out.println(s);
+        futureTask.run();
+        String o = futureTask.get();
+        System.out.println(o);
     }
 }
