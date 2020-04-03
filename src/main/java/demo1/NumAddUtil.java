@@ -6,12 +6,14 @@ import java.util.concurrent.TimeUnit;
 
 public class NumAddUtil {
 private static int num = 0;
-   private static ThreadLocal<Integer> threadLocal = new ThreadLocal<>();
+   private static ThreadLocal<Long> threadLocal = new ThreadLocal<>();
     public static int add(int a) throws InterruptedException {
-        num = a;
-        threadLocal.set(num);
+        Long t = System.currentTimeMillis();
+        threadLocal.set(t);
+        threadLocal.set(t);
+        System.out.println(t);
         TimeUnit.SECONDS.sleep( 1);
-        return threadLocal.get()+10;
+        return threadLocal.get().intValue();
     }
 
     public static void main(String[] args) {
