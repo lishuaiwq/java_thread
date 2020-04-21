@@ -32,14 +32,17 @@ public class SimpleThread {
         /****
          * 基础创建
          */
-        FutureTask<String> futureTask = new FutureTask( new Callable<String>() {
-
-            @Override
-            public String call() throws Exception {
-                return "hehe";
+        FutureTask<String> futureTask = new FutureTask((Callable<String>) () -> {
+            for(int i=0;i<10;i++){
+                Thread.sleep(1000);
+                System.out.println("睡眠"+i+"秒");
             }
+            return "1";
+
         });
-        futureTask.run();
+      new Thread(futureTask).start();
+
+        System.out.println("主线程");
         String o = futureTask.get();
         System.out.println(o);
     }
